@@ -1,19 +1,23 @@
-// app/doc/page.tsx
-
+import Hero from "@/components/hero-home";
+import BusinessCategories from "@/components/business-categories";
+import FeaturesPlanet from "@/components/features-planet";
+import LargeTestimonial from "@/components/large-testimonial";
+import Cta from "@/components/cta";
 export const metadata = {
-    title: "Dokumentasi",
-    description: "Halaman dokumentasi resep makanan",
-  };
-  
-  export default function DocumentationPage() {
-    return (
+  title: "Dokumentasi",
+  description: "Halaman dokumentasi resep makanan",
+};
+
+export default function DocumentationPage() {
+  return (
+    <>
       <main className="max-w-4xl mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold mb-4">Dokumentasi</h1>
-        <p className="text-gray-600">
-          Ini adalah halaman dokumentasi untuk aplikasi resep makanan Anda. Tambahkan konten di sini
-          sesuai kebutuhan seperti cara penggunaan, API endpoint, atau panduan pengguna.
-        </p>
+      <Hero />
+            <BusinessCategories />
+            <FeaturesPlanet />
+            <LargeTestimonial />
+            <Cta />
       </main>
-    );
-  }
-  
+    </>
+  );
+}

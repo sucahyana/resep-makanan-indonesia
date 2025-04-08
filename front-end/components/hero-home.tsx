@@ -6,6 +6,7 @@ import Avatar03 from "@/public/images/nasi-bakar.jpg";
 import Avatar04 from "@/public/images/nasi-goreng.jpg";
 import Avatar05 from "@/public/images/nasi-kuning.jpg";
 import Avatar06 from "@/public/images/nasi-uduk.jpg";
+import Link from "next/link";
 
 export default function HeroHome() {
   return (
@@ -46,15 +47,15 @@ export default function HeroHome() {
                 Temukan, kelola, dan integrasikan berbagai resep makanan khas
                 Indonesia dengan mudah melalui layanan API kami yang modern dan fleksibel.
               </p>
-              <div className="relative before:absolute before:inset-0 before:border-y before:[border-image:linear-gradient(to_right,transparent,--theme(--color-slate-300/.8),transparent)1]">
+              <div className="p-2 relative before:absolute before:inset-0 before:border-y before:[border-image:linear-gradient(to_right,transparent,--theme(--color-slate-300/.8),transparent)1]">
                 <div
                   className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center"
                   data-aos="zoom-y-out"
                   data-aos-delay={450}
                 >
-                  <a
+                  <Link
                     className="btn group mb-4 w-full bg-gradient-to-t from-red-600 to-red-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-sm hover:bg-[length:100%_150%] sm:mb-0 sm:w-auto"
-                    href="#0"
+                    href="/doc"
                   >
                     <span className="relative inline-flex items-center">
                       Mulai Sekarang{" "}
@@ -62,12 +63,15 @@ export default function HeroHome() {
                         -&gt;
                       </span>
                     </span>
-                  </a>
+                  </Link>
+                  <span className="my-auto ml-4 text-gray-500">
+                    atau
+                  </span>
                   <a
-                    className="btn w-full bg-white text-gray-800 shadow-sm hover:bg-gray-50 sm:ml-4 sm:w-auto"
+                    className="btn w-full bg-white text-gray-800 shadow-sm hover:bg-gray-50 sm:ml-4 sm:w-auto opacity-60"
                     href="#0"
                   >
-                    Pelajari Lebih Lanjut
+                    Langsung Subscribe
                   </a>
                 </div>
               </div>
