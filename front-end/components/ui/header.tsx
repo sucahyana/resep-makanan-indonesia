@@ -1,16 +1,18 @@
-"use client";
 import Link from "next/link";
 import Logo from "./logo";
 import { useEffect, useState, useRef } from "react";
 import { Dialog } from "@headlessui/react";
 import Sidebar from "../sidebar";
+import { Menu } from "lucide-react";
+import { LuSearchCode } from "react-icons/lu";
 
-interface HeaderProps {
+export default function Header({
+  showSidebar = false,
+}: {
   showSidebar?: boolean;
-}
-
-export default function Header({ showSidebar = false }: HeaderProps) {
-  const [isOpen, setIsOpen] = useState(false);
+}) {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -18,7 +20,7 @@ export default function Header({ showSidebar = false }: HeaderProps) {
     const down = (e: KeyboardEvent) => {
       if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setIsOpen((open) => !open);
+        setIsSearchOpen((open) => !open);
       }
     };
     window.addEventListener("keydown", down);
@@ -26,53 +28,72 @@ export default function Header({ showSidebar = false }: HeaderProps) {
   }, []);
 
   useEffect(() => {
-    if (isOpen) {
+    if (isSearchOpen) {
       setTimeout(() => {
         inputRef.current?.focus();
       }, 100);
     }
-  }, [isOpen]);
+  }, [isSearchOpen]);
 
   return (
     <>
-      <header className="fixed top-2 z-30 w-full md:top-6">
+      <header className="fixed top-0 z-60 w-full bg-white shadow">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="relative flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white/90 px-4 py-2 shadow-lg backdrop-blur-xs">
-            <div className="flex w-full items-center justify-between sm:w-auto">
+          <div className="flex h-16 items-center justify-between">
+            {/* Sidebar toggle on mobile */}
+            <div className="flex items-center gap-3 sm:gap-4">
+              {showSidebar && (
+                <button
+                  className="md:hidden"
+                  onClick={() => setIsSidebarOpen(true)}
+                  aria-label="Buka menu"
+                >
+                  <Menu className="w-6 h-6 text-gray-800" />
+                </button>
+              )}
               <Logo />
-              <button
-                onClick={() => setIsOpen(true)}
-                className="sm:hidden rounded-md bg-gray-100 px-3 py-1.5 text-sm text-gray-800 hover:bg-gray-200"
-              >
-                🔍
-              </button>
             </div>
 
-            <div className="hidden sm:flex flex-1">
+            {/* Search Button (Mobile & Desktop) */}
+            {/* Search Button (Responsive) */}
+            <div className="flex items-center">
+              {/* Mobile - Icon only */}
+              <span className="sm:hidden my-auto rounded-md  hover:from-slate-400 hover:to-slate-200">
+                <button
+                  onClick={() => setIsSearchOpen(true)}
+                  aria-label="Search"
+                  className="text-gray-800"
+                >
+                  <LuSearchCode size={28} className=" text-gray-800" />
+                </button>
+              </span>
+
+              {/* Desktop - Full button */}
               <button
-                onClick={() => setIsOpen(true)}
-                className="btn-sm bg-gray-100 text-gray-800 shadow-sm hover:bg-gray-200"
+                onClick={() => setIsSearchOpen(true)}
+                className="hidden sm:flex items-center btn-sm bg-gray-100 text-gray-800 hover:bg-gray-200"
               >
-                <span className="hidden sm:inline">Search</span>
-                <kbd className="ml-2 hidden rounded bg-white px-1.5 py-0.5 text-xs text-gray-500 sm:inline">
+                Search
+                <kbd className="ml-2 rounded bg-white px-1.5 py-0.5 text-xs text-gray-500">
                   Ctrl K
                 </kbd>
               </button>
             </div>
 
-            <ul className="flex w-full flex-col items-start gap-2 sm:w-auto sm:flex-row sm:items-center sm:justify-end sm:gap-3">
-              <li className="w-full sm:w-auto">
+            {/* Auth Buttons */}
+            <ul className="flex gap-2">
+              <li>
                 <Link
                   href="/signin"
-                  className="block w-full text-center btn-sm bg-white text-gray-800 hover:bg-gray-50"
+                  className="btn-sm text-gray-800 hover:bg-gray-100"
                 >
                   Login
                 </Link>
               </li>
-              <li className="w-full sm:w-auto">
+              <li>
                 <Link
                   href="/signup"
-                  className="block w-full text-center btn-sm bg-gray-800 text-white hover:bg-gray-900"
+                  className="btn-sm bg-gray-800 text-white hover:bg-gray-900"
                 >
                   Register
                 </Link>
@@ -82,13 +103,22 @@ export default function Header({ showSidebar = false }: HeaderProps) {
         </div>
       </header>
 
-      {/* Optional Sidebar */}
-      {showSidebar && <Sidebar/>}
+      {/* Sidebar */}
+      {showSidebar && (
+        <Sidebar
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+        />
+      )}
 
       {/* Search Dialog */}
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
+      <Dialog
+        open={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        className="relative z-[60]"
+      >
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-        <div className="fixed inset-0 flex items-start justify-center p-4 pt-20">
+        <div className="fixed inset-0 flex items-start justify-center p-4 pt-24">
           <Dialog.Panel className="w-full max-w-xl rounded-xl bg-white p-4 shadow-xl">
             <input
               ref={inputRef}
@@ -100,21 +130,32 @@ export default function Header({ showSidebar = false }: HeaderProps) {
             />
             <div className="mt-4 space-y-2">
               {query === "" ? (
-                <p className="text-sm text-gray-500">Ketik untuk mulai mencari...</p>
+                <p className="text-sm text-gray-500">
+                  Ketik untuk mulai mencari...
+                </p>
               ) : (
                 <ul className="space-y-1">
                   <li>
-                    <a href="/doc" className="block rounded px-3 py-2 hover:bg-gray-100">
+                    <a
+                      href="/doc"
+                      className="block rounded px-3 py-2 hover:bg-gray-100"
+                    >
                       📄 Dokumentasi API
                     </a>
                   </li>
                   <li>
-                    <a href="/signup" className="block rounded px-3 py-2 hover:bg-gray-100">
+                    <a
+                      href="/signup"
+                      className="block rounded px-3 py-2 hover:bg-gray-100"
+                    >
                       👤 Daftar Akun
                     </a>
                   </li>
                   <li>
-                    <a href="/signin" className="block rounded px-3 py-2 hover:bg-gray-100">
+                    <a
+                      href="/signin"
+                      className="block rounded px-3 py-2 hover:bg-gray-100"
+                    >
                       🔐 Masuk
                     </a>
                   </li>
@@ -124,6 +165,9 @@ export default function Header({ showSidebar = false }: HeaderProps) {
           </Dialog.Panel>
         </div>
       </Dialog>
+
+      {/* Spacer supaya konten tidak ketutup header */}
+      <div className="h-16 md:h-20" />
     </>
   );
 }

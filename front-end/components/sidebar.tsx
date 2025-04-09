@@ -42,7 +42,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </button>
         </div>
 
-        <nav className="space-y-2">
+        <nav className="space-y-2 mt-20">
           <Link
             href="/"
             className="block rounded px-4 py-2 text-gray-800 hover:bg-gray-100 transition"

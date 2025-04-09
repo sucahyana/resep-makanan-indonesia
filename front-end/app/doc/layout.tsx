@@ -20,7 +20,7 @@ export default function DefaultLayout({
       duration: 700,
       easing: "ease-out-cubic",
     });
-  }, []); // ← gunakan dependency array agar hanya jalan sekali
+  }, []); 
 
   return (
     <>
@@ -30,15 +30,15 @@ export default function DefaultLayout({
         <section className="relative">
           <PageIllustration />
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            {/* Konten Hero */}
+          
             <div className="pb-12 pt-32 md:pb-20 md:pt-40">
-              {/* Header Section */}
+             
               <div
                 className="pb-12 text-center md:pb-16"
                 data-aos="zoom-y-out"
               >
                 <div className="mb-6 border-y [border-image:linear-gradient(to_right,transparent,--theme(--color-slate-300/.8),transparent)1]">
-                  {/* Tambahkan kontenmu di sini jika ada */}
+                  
                 </div>
               </div>
               {children}
